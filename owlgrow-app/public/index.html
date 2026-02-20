@@ -5,19 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OwlGrow - Earn USDT</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Telegram & Firebase SDKs -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 <body class="bg-[#0f172a] text-white pb-24">
-
-    <!-- Loading Screen -->
-    <div id="loading" class="fixed inset-0 bg-[#0f172a] flex flex-col items-center justify-center z-50">
-        <div class="animate-spin rounded-full h-14 w-14 border-t-4 border-orange-500 border-opacity-50"></div>
-        <p class="mt-4 text-orange-500 font-bold tracking-widest animate-pulse">OWL GROWING...</p>
-    </div>
 
     <!-- Header Section -->
     <header class="p-4 flex justify-between items-center border-b border-slate-800 sticky top-0 bg-[#0f172a] z-40">
@@ -27,16 +20,16 @@
                 <div id="level-badge" class="absolute -bottom-1 -right-1 bg-orange-500 text-[8px] font-bold px-1 rounded border border-white">Lvl 1</div>
             </div>
             <div>
-                <p id="user-name" class="font-bold text-sm truncate w-24">Loading...</p>
+                <p id="user-name" class="font-bold text-sm truncate w-24">User...</p>
                 <p class="text-[10px] text-slate-400">Bronze Member</p>
             </div>
         </div>
         <div class="flex gap-2">
-            <div class="bg-slate-800 px-3 py-1 rounded-lg flex items-center gap-1">
+            <div class="bg-slate-800 px-3 py-1 rounded-lg flex items-center gap-1 border border-slate-700">
                 <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" class="w-3">
                 <span id="balance-usdt" class="font-bold text-xs">0.00</span>
             </div>
-            <div class="bg-slate-800 px-3 py-1 rounded-lg flex items-center gap-1">
+            <div class="bg-slate-800 px-3 py-1 rounded-lg flex items-center gap-1 border border-slate-700">
                 <span class="text-yellow-500 text-xs">🦉</span>
                 <span id="balance-owl" class="font-bold text-xs">0</span>
             </div>
@@ -44,117 +37,85 @@
     </header>
 
     <main class="p-4">
-        <!-- 1. HOME SCREEN -->
+        <!-- HOME SCREEN -->
         <section id="home-screen" class="tab-content">
-            <div class="card bg-gradient-to-r from-orange-600 to-amber-500 p-5 rounded-2xl mb-6 shadow-xl relative overflow-hidden">
-                <div class="relative z-10">
-                    <h3 class="font-black text-lg">Daily Check-in</h3>
-                    <p class="text-xs opacity-90">Streak: <span id="streak-count">0</span> Days | Total: <span id="total-days">0</span></p>
-                    <button onclick="checkIn()" class="mt-3 bg-white text-orange-600 px-6 py-2 rounded-xl font-bold text-xs uppercase shadow-md active:scale-95 transition-all">Claim Reward</button>
-                </div>
-                <span class="absolute -right-4 -bottom-4 text-7xl opacity-20">📅</span>
+            <div class="card bg-gradient-to-r from-orange-600 to-amber-500 p-5 rounded-2xl mb-6 shadow-lg">
+                <h3 class="font-black text-lg">Daily Check-in</h3>
+                <p class="text-xs opacity-90">Streak: <span id="streak-count">0</span> Days</p>
+                <button onclick="checkIn()" class="mt-3 bg-white text-orange-600 px-6 py-2 rounded-xl font-bold text-xs uppercase active:scale-95 transition-all">Claim Reward</button>
             </div>
 
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-bold text-lg flex items-center gap-2">🔥 HOT TASKS</h2>
-                <span class="text-[10px] text-slate-400 uppercase tracking-widest">Update Daily</span>
-            </div>
+            <h2 class="font-bold text-lg mb-4">🔥 HOT TASKS</h2>
             <div id="hot-tasks-list" class="space-y-4">
-                <!-- Hot Tasks Injected Here -->
+                <!-- Tasks will load here -->
             </div>
         </section>
 
-        <!-- 2. TASKS SCREEN -->
+        <!-- TASKS SCREEN -->
         <section id="tasks-screen" class="tab-content hidden">
-            <div class="flex gap-2 mb-6 overflow-x-auto pb-2 no-scrollbar">
-                <button class="bg-orange-500 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">All Tasks</button>
-                <button class="bg-slate-800 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">Twitter</button>
-                <button class="bg-slate-800 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">Telegram</button>
-                <button class="bg-slate-800 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap">TikTok</button>
-            </div>
-            <div id="all-tasks-list" class="space-y-3">
-                <!-- All Tasks Injected Here -->
-            </div>
+            <h2 class="font-bold text-lg mb-4 text-center">All Social Tasks</h2>
+            <div id="all-tasks-list" class="space-y-3"></div>
         </section>
 
-        <!-- 3. RANK (LEADERBOARD) -->
+        <!-- RANK SCREEN -->
         <section id="rank-screen" class="tab-content hidden">
-            <h2 class="text-center font-bold text-xl mb-6">World Ranking 🏆</h2>
-            <div id="leaderboard-list" class="space-y-3 mb-8">
-                <!-- Ranking Injected Here -->
-            </div>
+            <h2 class="text-center font-bold text-xl mb-6">Leaderboard 🏆</h2>
+            <div id="leaderboard-list" class="space-y-3 mb-8"></div>
             
-            <div class="bg-slate-800 p-5 rounded-2xl border border-orange-500 border-dashed">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="font-bold text-orange-500">Invite Friends</h3>
-                        <p class="text-[10px] text-slate-400">Earn 10% commission on every task</p>
-                    </div>
-                    <span class="text-2xl">👥</span>
-                </div>
-                <button onclick="shareReferral()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
-                    SHARE TO TELEGRAM
-                </button>
+            <div class="bg-slate-800 p-5 rounded-2xl border border-orange-500 border-dashed text-center">
+                <h3 class="font-bold text-orange-500">Invite Friends</h3>
+                <p class="text-[10px] text-slate-400 mb-4">Earn 10% commission on every task completed</p>
+                <button onclick="shareReferral()" class="w-full bg-blue-600 py-3 rounded-xl font-bold text-sm">SHARE TO TELEGRAM</button>
             </div>
         </section>
 
-        <!-- 4. ACTIVITY SCREEN -->
+        <!-- ACTIVITY SCREEN -->
         <section id="activity-screen" class="tab-content hidden">
-            <h2 class="font-bold text-lg mb-4">Activity Center ⚡</h2>
-            <div class="bg-slate-800 p-5 rounded-2xl mb-4">
-                <div class="flex justify-between items-center mb-2">
-                    <p class="text-sm font-bold text-slate-200">Daily Goal: Complete 3 Tasks</p>
-                    <span class="text-xs text-orange-500 font-bold">+2 OWL</span>
-                </div>
+            <h2 class="font-bold text-lg mb-4 text-center">Activity Center</h2>
+            <div class="card bg-slate-800 p-5 rounded-2xl">
+                <p class="text-sm font-bold mb-2">Daily Goal: 3 Tasks</p>
                 <div class="w-full bg-slate-700 h-3 rounded-full overflow-hidden">
-                    <div id="activity-progress" class="bg-orange-500 h-full transition-all duration-500" style="width: 0%"></div>
+                    <div id="activity-progress" class="bg-orange-500 h-full w-0 transition-all duration-500"></div>
                 </div>
-                <p class="text-[10px] text-slate-400 mt-2">Progress: <span id="tasks-done">0</span>/3 Tasks Completed</p>
+                <p class="text-[10px] text-slate-400 mt-2">Completed: <span id="tasks-done">0</span>/3</p>
             </div>
         </section>
 
-        <!-- 5. PROFILE SCREEN -->
-        <section id="profile-screen" class="tab-content hidden">
-            <div class="text-center mb-8">
-                <img id="profile-pic-large" class="w-24 h-24 rounded-full border-4 border-slate-800 mx-auto mb-4 shadow-2xl" src="https://via.placeholder.com/96">
-                <h2 id="profile-name-text" class="text-xl font-black">Username</h2>
-                <p class="text-xs text-slate-500 mt-1">ID: <span id="profile-id-text">00000000</span></p>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-slate-800 p-4 rounded-2xl text-center">
-                    <p class="text-[10px] text-slate-400 uppercase font-bold">Total Earned</p>
+        <!-- PROFILE SCREEN -->
+        <section id="profile-screen" class="tab-content hidden text-center">
+            <img id="profile-pic-large" class="w-24 h-24 rounded-full border-4 border-slate-800 mx-auto mb-4" src="https://via.placeholder.com/96">
+            <h2 id="profile-name-text" class="text-xl font-black">Username</h2>
+            <p class="text-xs text-slate-500">ID: <span id="profile-id-text">000000</span></p>
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="bg-slate-800 p-4 rounded-2xl">
+                    <p class="text-[10px] text-slate-400">USDT</p>
                     <p id="total-usdt-p" class="text-lg font-black text-orange-500">$0.00</p>
                 </div>
-                <div class="bg-slate-800 p-4 rounded-2xl text-center">
-                    <p class="text-[10px] text-slate-400 uppercase font-bold">Account Age</p>
-                    <p class="text-lg font-black text-slate-200">2 Days</p>
+                <div class="bg-slate-800 p-4 rounded-2xl">
+                    <p class="text-[10px] text-slate-400">OWL</p>
+                    <p id="total-owl-p" class="text-lg font-black text-yellow-500">0</p>
                 </div>
             </div>
-            <button onclick="tg.close()" class="w-full mt-10 bg-red-500/10 text-red-500 py-3 rounded-xl border border-red-500/20 font-bold">Logout App</button>
+            <button onclick="tg.close()" class="w-full mt-10 bg-red-600/20 text-red-500 py-3 rounded-xl font-bold">Close App</button>
         </section>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 h-20 bg-[#0f172a] border-t border-slate-800 flex items-center justify-around px-2 z-50">
+    <nav class="fixed bottom-0 left-0 right-0 h-20 bg-[#0f172a] border-t border-slate-800 flex items-center justify-around z-50">
         <button onclick="switchTab('home')" class="nav-btn active-tab" id="btn-home">
-            <span class="text-xl">🏠</span>
-            <span class="text-[9px] mt-1 font-bold">HOME</span>
+            <span>🏠</span><span class="text-[9px] font-bold">HOME</span>
         </button>
         <button onclick="switchTab('tasks')" class="nav-btn" id="btn-tasks">
-            <span class="text-xl">📋</span>
-            <span class="text-[9px] mt-1 font-bold">TASKS</span>
+            <span>📋</span><span class="text-[9px] font-bold">TASKS</span>
         </button>
         <button onclick="switchTab('rank')" class="nav-btn" id="btn-rank">
-            <span class="text-xl">🏆</span>
-            <span class="text-[9px] mt-1 font-bold">RANK</span>
+            <span>🏆</span><span class="text-[9px] font-bold">RANK</span>
         </button>
         <button onclick="switchTab('activity')" class="nav-btn" id="btn-activity">
-            <span class="text-xl">⚡</span>
-            <span class="text-[9px] mt-1 font-bold">ACTIVITY</span>
+            <span>⚡</span><span class="text-[9px] font-bold">ACTIVITY</span>
         </button>
         <button onclick="switchTab('profile')" class="nav-btn" id="btn-profile">
-            <span class="text-xl">👤</span>
-            <span class="text-[9px] mt-1 font-bold">PROFILE</span>
+            <span>👤</span><span class="text-[9px] font-bold">PROFILE</span>
         </button>
     </nav>
 
