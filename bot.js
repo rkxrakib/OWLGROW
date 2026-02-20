@@ -4,7 +4,7 @@ const token = '8440326465:AAH05W-UQX1G1_oFLLxBsGXtoMveSvPD5Dg';
 const bot = new TelegramBot(token, {polling: true});
 
 // মিনি অ্যাপ ইউআরএল (এখানে আপনার হোস্টিং লিংক বসাবেন)
-const webAppUrl = 'https://your-hosting-link.com';
+const webAppUrl = 'https://OWLGROE.VERCEL.APP;
 
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
